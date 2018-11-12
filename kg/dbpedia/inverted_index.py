@@ -9,7 +9,7 @@ import json
 from sqlitedict import SqliteDict
 from multiprocessing import Pool, Lock, Value
 
-from kg.dbpedia.name_extraction import DB_OBJECT_NAME
+from kg.dbpedia.name_extraction import DBPEDIA_FOAF_LONG
 
 FULL_NAME_INDEX = "full_name_inverted_index"
 NAME_N_GRAM_INDEX = "name_n_gram_inverted_index"
@@ -123,14 +123,14 @@ class InvertedIndex(object):
     pool.close()
     count = 0
     for sub, predicate, obj, normalized_obj, n_grams in results:
-      if predicate not in [DB_OBJECT_NAME]:
+      if predicate not in [DBPEDIA_FOAF_LONG]:
         continue
       if normalized_obj not in self.full_string_inverted_index:
         self.full_string_inverted_index[normalized_obj] = []
       self.full_string_inverted_index[normalized_obj].append(
         Triple(uri=sub, string=obj, predicate=predicate))
 
-      if predicate == DB_OBJECT_NAME:
+      if predicate == DBPEDIA_FOAF_LONG:
         tmp_inverted_index = self.name_n_gram_inverted_index
 
       for n_gram in n_grams:
