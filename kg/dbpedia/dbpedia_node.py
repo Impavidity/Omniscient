@@ -4,7 +4,7 @@ from enum import Enum
 import string
 
 
-DBPEDIA_FOAF_LONG = r"^http://xmlns.com/foaf/0.1/name"
+DBPEDIA_FOAF_LONG = "http://xmlns.com/foaf/0.1/name"
 LANG_EN = "en"
 
 RDF_OBJECT_TYPE = Enum('RDF_OBJECT_TYPE', ('URI', 'STRING', 'TEXT', 'OTHER'))
