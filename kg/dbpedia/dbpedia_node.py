@@ -4,10 +4,6 @@ from enum import Enum
 import string
 
 
-DBPEDIA_NS_LONG = r"^http://dbpedia.org/"
-DBPEDIA_FOAF_LONG = r"^http://xmlns.com/foaf/0.1/"
-DBPEDIA_NS_SHORT = "db:"
-DBPEDIA_FOAF_SHORT = "foaf:"
 LANG_EN = "en"
 
 RDF_OBJECT_TYPE = Enum('RDF_OBJECT_TYPE', ('URI', 'STRING', 'TEXT', 'OTHER'))
@@ -33,9 +29,7 @@ class DBpediaNode(object):
   @staticmethod
   def clean_uri(uri):
     if uri[0] == '<':
-      uri = uri[1: -1].lower()
-    uri = re.sub(DBPEDIA_NS_LONG, DBPEDIA_NS_SHORT, uri)
-    uri = re.sub(DBPEDIA_FOAF_LONG, DBPEDIA_FOAF_SHORT, uri)
+      uri = uri[1: -1]
     return uri.strip()
 
   @staticmethod
