@@ -23,6 +23,8 @@ ALIAS_N_GRAM_INDEX = "alias_n_gram_inverted_index"
 LOGGER = logging.getLogger("NameExtraction")
 LOGGER.setLevel(logging.INFO)
 
+abbre = {"'s", "n't", "'re", "'d", "'ll", "'ve", "'m"}
+
 
 class AtomicCounter(object):
   def __init__(self):
@@ -41,7 +43,8 @@ def Triple(mid, string, predicate):
 
 class InvertedIndex(object):
   model = spacy.load('en', disable=['tagger', 'ner', 'parser'])
-  stop_words = spacy.lang.en.stop_words.STOP_WORDS
+  stop_words = model.Defaults.stop_words
+  stop_words.update(abbre)
   counter = AtomicCounter()
 
   def __init__(self, input_path, index_path):
@@ -97,7 +100,7 @@ class InvertedIndex(object):
     all_ngrams = set()
     max_n = min(len(filtered_tokens), 3)
     for n in range(1, max_n + 1):
-      ngrams = InvertedIndex.find_ngrams(tokens, n)
+      ngrams = InvertedIndex.find_ngrams(filtered_tokens, n)
       all_ngrams = all_ngrams | ngrams
     return all_ngrams
 
@@ -120,12 +123,15 @@ class InvertedIndex(object):
   def run(self):
     LOGGER.info("[{}] Starting Indexer...".format(datetime.datetime.now()))
 
-    pool = Pool(32)
+    pool = Pool(64)
     results = pool.map(InvertedIndex.process_line, self.f)
     LOGGER.info(
       "[{}] Finish Preprocessing for {} lines".format(datetime.datetime.now(), InvertedIndex.counter.value.value))
+    pool.close()
     count = 0
     for sub, predicate, obj, normalized_obj, n_grams in results:
+      if predicate not in [FB_OBJECT_NAME, FB_COMMON_TOPIC_ALIAS]:
+        continue
       if normalized_obj not in self.full_string_inverted_index:
         self.full_string_inverted_index[normalized_obj] = []
       self.full_string_inverted_index[normalized_obj].append(
@@ -157,9 +163,11 @@ class InvertedIndex(object):
       self.full_collection[key] = self.full_string_inverted_index[key]
       count += 1
       if count % 2000000 == 0:
+        self.full_collection.commit()
         LOGGER.info("[{}] {} index added.".format(datetime.datetime.now(), count))
     self.full_collection.close()
     del self.full_string_inverted_index
+    LOGGER.info("[{}] Close dbs.".format(datetime.datetime.now()))
 
     LOGGER.info("[{}] Stage 2: Write name index. Total {} index.".format(datetime.datetime.now(),
                                                                          len(self.name_n_gram_inverted_index)))
@@ -168,10 +176,12 @@ class InvertedIndex(object):
       self.name_collection[key] = self.name_n_gram_inverted_index[key]
       count += 1
       if count % 2000000 == 0:
+        self.name_collection.commit()
         LOGGER.info("[{}] {} index added.".format(datetime.datetime.now(), count))
 
     self.name_collection.close()
     del self.name_n_gram_inverted_index
+    LOGGER.info("[{}] Close dbs.".format(datetime.datetime.now()))
 
     LOGGER.info("[{}] Stage 3: Write alias index. Total {} index.".format(datetime.datetime.now(),
                                                                           len(self.alias_n_gram_inverted_index)))
@@ -180,11 +190,12 @@ class InvertedIndex(object):
       self.alias_collection[key] = self.alias_n_gram_inverted_index[key]
       count += 1
       if count % 2000000 == 0:
+        self.alias_collection.commit()
         LOGGER.info("[{}] {} index added.".format(datetime.datetime.now(), count))
     self.alias_collection.close()
     del self.alias_n_gram_inverted_index
 
-    LOGGER.info("[{}] Close all dbs.".format(datetime.datetime.now()))
+    LOGGER.info("[{}] Close dbs.".format(datetime.datetime.now()))
 
 
 def main(args):

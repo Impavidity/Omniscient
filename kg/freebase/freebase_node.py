@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from enum import Enum
-import string
-from rdflib import Graph
+
 
 FREEBASE_NS_LONG = r"^http://rdf.freebase.com/ns/"
 FREEBASE_NS_SHORT = "fb:"
