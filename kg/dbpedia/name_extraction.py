@@ -10,10 +10,8 @@ import datetime
 import json
 import sys
 from kg.dbpedia.dbpedia import DBpedia
-from kg.dbpedia.dbpedia_node import DBpediaNode, DBPEDIA_NS_SHORT, DBPEDIA_FOAF_SHORT
+from kg.dbpedia.dbpedia_node import DBpediaNode, DBPEDIA_FOAF_LONG
 
-
-DB_OBJECT_NAME = DBPEDIA_FOAF_SHORT + "name"
 
 LOGGER = logging.getLogger("NameExtraction")
 LOGGER.setLevel(logging.INFO)
@@ -71,7 +69,7 @@ class NameExtraction(object):
     collection = StringCollection(DBpediaNode.clean_uri(src.uri))
     for p in src.predicate_values:
       predicate = DBpediaNode.clean_uri(p)
-      if predicate.startswith(DB_OBJECT_NAME):
+      if predicate.startswith(DBPEDIA_FOAF_LONG):
         for value in src.predicate_values[p]:
           try:
             obj_val = NameExtraction.clean_special_char(DBpediaNode.normalize_object_value(value))
