@@ -52,6 +52,7 @@ class NameExtraction(object):
       #   print(node.predicate_values)
 
       for file in os.listdir(self.input_dir):
+        LOGGER.info("Parsing file...{} ".format(file))
         for collection in map(self.parsing_node, DBpedia(os.path.join(self.input_dir,file))):
           for name in collection.names:
             fout.write(json.dumps([collection.uri, DB_OBJECT_NAME, name]) + "\n")
