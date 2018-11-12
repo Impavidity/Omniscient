@@ -53,7 +53,7 @@ class NameExtraction(object):
         LOGGER.info("Parsing file...{} ".format(file))
         for collection in map(self.parsing_node, DBpedia(os.path.join(self.input_dir,file))):
           for name in collection.names:
-            fout.write(json.dumps([collection.uri, DB_OBJECT_NAME, name]) + "\n")
+            fout.write(json.dumps([collection.uri, DBPEDIA_FOAF_LONG, name]) + "\n")
           count += 1
           if count % 10000 == 0:
             LOGGER.info("[{}] {} nodes added.".format(datetime.datetime.now(), count))
