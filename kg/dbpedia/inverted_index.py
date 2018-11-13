@@ -14,7 +14,7 @@ from kg.dbpedia.name_extraction import DBPEDIA_FOAF_LONG
 FULL_NAME_INDEX = "full_name_inverted_index"
 NAME_N_GRAM_INDEX = "name_n_gram_inverted_index"
 
-LOGGER = logging.getLogger("NameExtraction")
+LOGGER = logging.getLogger("InvertedIndex")
 LOGGER.setLevel(logging.INFO)
 
 abbre = {"'s", "n't", "'re", "'d", "'ll", "'ve", "'m"}

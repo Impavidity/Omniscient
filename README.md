@@ -27,3 +27,17 @@ nohup python -u -m kg.freebase.inverted_index --input /path/to/freebase_name.jso
 ```code
 python -m kg.freebase.candidate_retrieval --index /path/to/index/path  --query obama
 ```
+
+## Install pyjnius
+You might need to setup some config for conda lib
+```
+ln -s /lib/x86_64-linux-gnu/libpthread.so.0 libpthread.so
+ln -s /lib/x86_64-linux-gnu/libc.so.6 libc.so 
+```
+
+## Dependencies
+```
+mkdir resource
+cd resource
+wget https://git.uwaterloo.ca/p8shi/jar/raw/master/tdbquery.jar
+```
