@@ -3,6 +3,12 @@ Knowledge Extraction, Graph Construction and exciting Applications
 
 
 ## Requirement
+- Package Install
+```
+git clone https://github.com/Impavidity/Omniscient.git
+cd Omniscient
+python setup.py install
+```
 
 - Spacy
 ```code
