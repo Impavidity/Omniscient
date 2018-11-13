@@ -17,6 +17,21 @@ conda install spacy
 python -m spacy download en
 ```
 
+- pyjnius
+You may fail in installing the package because of `pyjnius`.
+You might need to setup some config for conda lib
+
+If you have this error,
+```
+anaconda3/compiler_compat/ld: cannot find -lpthread
+anaconda3/compiler_compat/ld: cannot find -lc
+```
+try to `cd anaconda3/lib` and do
+```
+ln -s /lib/x86_64-linux-gnu/libpthread.so.0 libpthread.so
+ln -s /lib/x86_64-linux-gnu/libc.so.6 libc.so 
+```
+
 - Dependencies
 ```
 mkdir resource
@@ -57,19 +72,5 @@ There are two type of query `query`(single query) and `parallel_query`(batch que
 For more example, you can refer to `kg/tdb_query.py`.
 
 
-## Install pyjnius
-You might need to setup some config for conda lib
-```
-pip install pyjnius
-```
-If you have this error,
-```
-anaconda3/compiler_compat/ld: cannot find -lpthread
-anaconda3/compiler_compat/ld: cannot find -lc
-```
-try to `cd anaconda3/lib` and do
-```
-ln -s /lib/x86_64-linux-gnu/libpthread.so.0 libpthread.so
-ln -s /lib/x86_64-linux-gnu/libc.so.6 libc.so 
-```
+
 

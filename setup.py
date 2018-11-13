@@ -8,6 +8,6 @@ setup(
     description='Knowledge Graph Toolkits',
     url='https://github.com/Impavidity/Omniscient',
     license='MIT',
-    install_requires=['spacy'],
+    install_requires=['spacy','pyjnius'],
     packages=find_packages(),
 )
