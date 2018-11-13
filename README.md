@@ -11,6 +11,13 @@ conda install spacy
 python -m spacy download en
 ```
 
+- Dependencies
+```
+mkdir resource
+cd resource
+wget https://git.uwaterloo.ca/p8shi/jar/raw/master/tdbquery.jar
+```
+
 ## Build Inverted Index for Freebase
 
 - Download the freebase dump from [here](https://developers.google.com/freebase/)
@@ -18,7 +25,6 @@ python -m spacy download en
 ```code
 nohup python -u -m kg.freebase.name_extraction --input /path/to/freebase/freebase-rdf-latest.gz --output_path /path/to/index/ --output_file freebase_name.json > freebase_name_extraction.log &
 ```
-The total node size is 125144313, it roughly takes 12.5 h to build the index
 - Build Index from the json file
 ```code
 nohup python -u -m kg.freebase.inverted_index --input /path/to/freebase_name.json --index /path/to/index/path > inverted_index_freebase_db.log &
@@ -28,16 +34,36 @@ nohup python -u -m kg.freebase.inverted_index --input /path/to/freebase_name.jso
 python -m kg.freebase.candidate_retrieval --index /path/to/index/path  --query obama
 ```
 
+## Query with TDB dataset
+
+With freebase dump, you can use `jena` to build index to support `SPARQL` query. 
+Here, we use `TDBLoader2`
+```
+apache-jena-3.6.0/bin/tdbloader2 --loc path_to_index/d-freebase path_to_freebase_dump
+```
+`--loc` specifies the path of index.
+Then you can run 
+```
+python -m kg.tdb_query --index path_to_index/d-freebase
+```
+for query.
+There are two type of query `query`(single query) and `parallel_query`(batch query with specific thread number).
+For more example, you can refer to `kg/tdb_query.py`.
+
+
 ## Install pyjnius
 You might need to setup some config for conda lib
+```
+pip install pyjnius
+```
+If you have this error,
+```
+anaconda3/compiler_compat/ld: cannot find -lpthread
+anaconda3/compiler_compat/ld: cannot find -lc
+```
+try to `cd anaconda3/lib` and do
 ```
 ln -s /lib/x86_64-linux-gnu/libpthread.so.0 libpthread.so
 ln -s /lib/x86_64-linux-gnu/libc.so.6 libc.so 
 ```
 
-## Dependencies
-```
-mkdir resource
-cd resource
-wget https://git.uwaterloo.ca/p8shi/jar/raw/master/tdbquery.jar
-```
