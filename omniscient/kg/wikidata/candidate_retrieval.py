@@ -9,12 +9,6 @@ from omniscient.kg.wikidata.inverted_index import (
   NAME_N_GRAM_INDEX)
 
 
-argparser = argparse.ArgumentParser()
-argparser.add_argument("--query", type=str, default=None)
-argparser.add_argument("--index_path", type=str, required=True)
-argparser.add_argument("--do_ngram", default=False, action="store_true")
-args = argparser.parse_args()
-
 class CandidateRetrieval(object):
   def __init__(self, index_path):
     self.index_path = index_path
@@ -58,6 +52,11 @@ class SearchThread(threading.Thread):
 
 
 if __name__ == "__main__":
+  argparser = argparse.ArgumentParser()
+  argparser.add_argument("--query", type=str, default=None)
+  argparser.add_argument("--index_path", type=str, required=True)
+  argparser.add_argument("--do_ngram", default=False, action="store_true")
+  args = argparser.parse_args()
   thread1 = SearchThread([args.query] * 1)
   # thread2 = SearchThread([args.query] * 100)
   thread1.start()
