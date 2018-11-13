@@ -18,6 +18,7 @@ python -m spacy download en
 ```
 
 - pyjnius
+
 You may fail in installing the package because of `pyjnius`.
 You might need to setup some config for conda lib
 
