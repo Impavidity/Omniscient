@@ -9,8 +9,8 @@ import os
 import datetime
 import json
 
-from kg.freebase.freebase import Freebase
-from kg.freebase.freebase_node import FreebaseNode, FREEBASE_NS_SHORT
+from omniscient.kg.freebase.freebase import Freebase
+from omniscient.kg.freebase.freebase_node import FreebaseNode, FREEBASE_NS_SHORT
 
 
 FB_OBJECT_NAME = FREEBASE_NS_SHORT + "type.object.name"

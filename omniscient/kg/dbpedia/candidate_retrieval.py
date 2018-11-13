@@ -3,11 +3,10 @@ import os
 from sqlitedict import SqliteDict
 import threading
 
-from kg.freebase.inverted_index import (
+from omniscient.kg.freebase.inverted_index import (
   InvertedIndex,
   FULL_NAME_INDEX,
-  NAME_N_GRAM_INDEX,
-  ALIAS_N_GRAM_INDEX)
+  NAME_N_GRAM_INDEX)
 
 
 argparser = argparse.ArgumentParser()
@@ -21,7 +20,6 @@ class CandidateRetrieval(object):
     self.index_path = index_path
     self.full_collection = SqliteDict(os.path.join(self.index_path, FULL_NAME_INDEX), flag="r")
     self.name_collection = SqliteDict(os.path.join(self.index_path, NAME_N_GRAM_INDEX), flag="r")
-    self.alias_collection = SqliteDict(os.path.join(self.index_path, ALIAS_N_GRAM_INDEX), flag="r")
 
     print("Finish Loading")
 
@@ -42,8 +40,6 @@ class CandidateRetrieval(object):
           max_length = cur_length
           if n_gram in self.name_collection:
             candidates_n_gram.extend(self.name_collection[n_gram])
-          if n_gram in self.alias_collection:
-            candidates_n_gram.extend(self.alias_collection[n_gram])
     return candidates_full_name + candidates_n_gram
 
 
@@ -62,10 +58,10 @@ class SearchThread(threading.Thread):
 
 
 if __name__ == "__main__":
-  thread1 = SearchThread([args.query] * 100)
-  thread2 = SearchThread([args.query] * 100)
+  thread1 = SearchThread([args.query] * 1)
+  # thread2 = SearchThread([args.query] * 100)
   thread1.start()
-  thread2.start()
+  # thread2.start()
   thread1.join()
-  thread2.join()
+  # thread2.join()
   print('Finish')

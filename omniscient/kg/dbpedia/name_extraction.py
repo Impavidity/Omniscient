@@ -8,9 +8,8 @@ import logging
 import os
 import datetime
 import json
-import sys
-from kg.dbpedia.dbpedia import DBpedia
-from kg.dbpedia.dbpedia_node import DBpediaNode, DBPEDIA_FOAF_LONG
+from omniscient.kg.dbpedia.dbpedia import DBpedia
+from omniscient.kg.dbpedia.dbpedia_node import DBpediaNode, DBPEDIA_FOAF_LONG
 
 
 LOGGER = logging.getLogger("NameExtraction")

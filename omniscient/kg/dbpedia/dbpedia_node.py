@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
 from enum import Enum
-import string
 
 
 DBPEDIA_FOAF_LONG = "http://xmlns.com/foaf/0.1/name"

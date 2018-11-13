@@ -1,9 +1,7 @@
 import gzip
 import logging
 
-from kg.freebase.freebase_node import FreebaseNode
-
-from rdflib import Graph
+from omniscient.kg.freebase.freebase_node import FreebaseNode
 
 
 logging.basicConfig()
@@ -21,7 +19,6 @@ class Freebase(object):
     self.atEOF = False
     self.current_node = None
     self.node = None
-    self.g = Graph()
     self.line_counter = 0
 
   # def clear_graph(self):
