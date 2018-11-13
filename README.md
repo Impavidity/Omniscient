@@ -71,7 +71,7 @@ apache-jena-3.6.0/bin/tdbloader2 --loc path_to_index/d-freebase path_to_freebase
 `--loc` specifies the path of index.
 Then you can run 
 ```
-python -m kg.tdb_query --index path_to_index/d-freebase
+python -m omniscient.kg.tdb_query --index path_to_index/d-freebase
 ```
 for query.
 There are two type of query `query`(single query) and `parallel_query`(batch query with specific thread number).
