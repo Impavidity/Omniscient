@@ -9,7 +9,7 @@ import json
 from sqlitedict import SqliteDict
 from multiprocessing import Pool, Lock, Value
 
-from kg.dbpedia.name_extraction import DBPEDIA_FOAF_LONG
+from omniscient.kg.dbpedia.name_extraction import DBPEDIA_FOAF_LONG
 
 FULL_NAME_INDEX = "full_name_inverted_index"
 NAME_N_GRAM_INDEX = "name_n_gram_inverted_index"

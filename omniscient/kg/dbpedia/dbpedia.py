@@ -1,7 +1,7 @@
 import gzip
 import logging
 
-from kg.dbpedia.dbpedia_node import DBpediaNode
+from omniscient.kg.dbpedia.dbpedia_node import DBpediaNode
 
 
 logging.basicConfig()

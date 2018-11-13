@@ -14,7 +14,7 @@ import json
 from sqlitedict import SqliteDict
 from multiprocessing import Pool, Lock, Value
 
-from kg.freebase.name_extraction import FB_OBJECT_NAME, FB_COMMON_TOPIC_ALIAS
+from omniscient.kg.freebase.name_extraction import FB_OBJECT_NAME, FB_COMMON_TOPIC_ALIAS
 
 FULL_NAME_INDEX = "full_name_inverted_index"
 NAME_N_GRAM_INDEX = "name_n_gram_inverted_index"

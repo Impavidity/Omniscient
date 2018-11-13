@@ -3,7 +3,7 @@ import os
 from sqlitedict import SqliteDict
 import threading
 
-from kg.dbpedia.inverted_index import (
+from omniscient.kg.wikidata.inverted_index import (
   InvertedIndex,
   FULL_NAME_INDEX,
   NAME_N_GRAM_INDEX)
