@@ -1,1 +1,1 @@
-from omniscient import *
+from omniscient import kg
