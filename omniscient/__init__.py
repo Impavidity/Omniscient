@@ -1,1 +1,1 @@
-from omniscient import *
+import omniscient

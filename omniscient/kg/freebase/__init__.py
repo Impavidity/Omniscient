@@ -1,1 +1,0 @@
-from omniscient.kg.freebase import *

@@ -13,5 +13,5 @@ if 'CLASSPATH' not in os.environ:
     os.environ['CLASSPATH'] = tdbquery_jar
 else:
     os.environ['CLASSPATH'] += tdbquery_jar
-
-from omniscient.kg import *
+# import kg
+# from omniscient.kg import *
