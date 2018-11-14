@@ -46,8 +46,7 @@ class TDBQuery(object):
     return parallel_result_list
 
   def __del__(self):
-    os.remove(os.path.join(self.path, "journal.jrnl"))
-    os.remove(os.path.join(self.path, "tdb.lock"))
+    self.tdbquery.close()
 
 
 if __name__ == "__main__":
