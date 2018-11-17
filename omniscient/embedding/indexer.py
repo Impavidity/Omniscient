@@ -12,7 +12,6 @@ EMBEDDING = "embbeding_index"
 
 class EmbeddingIndexer(object):
   def __init__(self, embedding_file, index_file):
-    print("SSS")
     self.embedding_file = embedding_file
     self.index_file = index_file
     logger.info("Input path: " + self.embedding_file)
@@ -29,7 +28,6 @@ class EmbeddingIndexer(object):
         embedding = np.array(tokens[1:], dtype=np.float32)
         yield (uri, embedding)
 
-
   def run(self):
     count = 0
     for key, value in self.iterator():
@@ -40,8 +38,10 @@ class EmbeddingIndexer(object):
         logger.info("[{}] {} index added.".format(datetime.datetime.now(), count))
     self.embedding.close()
 
+
 def main(args):
   EmbeddingIndexer(args.input, args.index).run()
+
 
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()

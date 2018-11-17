@@ -1,9 +1,9 @@
 import argparse
 import os
 from sqlitedict import SqliteDict
-import numpy as np
 
 from omniscient.embedding.indexer import EMBEDDING
+
 
 class Retriever(object):
   def __init__(self, index_path):
@@ -16,7 +16,8 @@ class Retriever(object):
 
 
 def main(args):
-    print(Retriever(args.index).get(args.uri))
+  print(Retriever(args.index).get(args.uri))
+
 
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()
@@ -25,4 +26,3 @@ if __name__ == "__main__":
 
   args = argparser.parse_args()
   main(args)
-  print('Finish')
