@@ -4,8 +4,11 @@ Knowledge Extraction, Graph Construction and exciting Applications
 
 ## Note:
 
-pipeline: Extractor, still under development
-structure: Basic structure for graph, still under development
+- pipeline:
+ Wrap the Stanford NLP into python.
+ Extractor, still under development.
+- structure: 
+ Basic structure for graph, still under development
 
 ## TODO
 
