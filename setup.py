@@ -8,6 +8,9 @@ setup(
   url='https://github.com/Impavidity/Omniscient',
   license='MIT',
   install_requires=['spacy', 'pyjnius'],
-  package_data={"omniscient": ["resource/tdbquery.jar"]},
+  package_data={"omniscient": [
+    "resource/jars/tdbquery.jar",
+    "resource/lexical/ordinal_lexical.tsv"
+  ]},
   packages=find_packages(),
 )

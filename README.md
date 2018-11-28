@@ -2,6 +2,12 @@
 
 Knowledge Extraction, Graph Construction and exciting Applications
 
+## TODO
+
+Use download cli tool to reslove the dependency issue.
+```
+https://github.com/explosion/spaCy/blob/master/spacy/cli/download.py
+```
 
 ## Requirement
 
@@ -77,6 +83,15 @@ for query.
 There are two type of query `query`(single query) and `parallel_query`(batch query with specific thread number).
 For more example, you can refer to `kg/tdb_query.py`.
 
-
-
+## Known bugs
+- Encoding
+Use
+```
+query.encode("utf-8")
+```
+instead of
+```
+query
+```
+as query argument.
 
