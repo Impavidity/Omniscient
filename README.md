@@ -2,6 +2,11 @@
 
 Knowledge Extraction, Graph Construction and exciting Applications
 
+## Note:
+
+pipeline: Extractor, still under development
+structure: Basic structure for graph, still under development
+
 ## TODO
 
 Use download cli tool to reslove the dependency issue.
