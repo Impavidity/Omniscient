@@ -14,3 +14,18 @@ ADD_VALUE = "add_value"
 VARIABLE = "variable"
 URI = "uri"
 LITERAL = "literal"
+
+NONE = "<NONE>"
+
+FORWARD_QUERY_TEMPLATE = """
+SELECT DISTINCT ?p
+WHERE {{
+    {0} ?p ?o .
+}}
+"""
+BACKWARD_QUERY_TEMPLATE = """
+SELECT DISTINCT ?p
+WHERE {{
+    ?s ?p {0} .
+}}
+"""

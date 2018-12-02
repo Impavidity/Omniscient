@@ -1,5 +1,4 @@
 import argparse
-import os
 from jnius import autoclass
 
 class TDBQuery(object):
@@ -23,6 +22,27 @@ class TDBQuery(object):
         solution_dict[var] = string
       result_list.append(solution_dict)
     return result_list
+
+  def sequential_query(self, qstrings):
+    jqstrings = self.JArray.newInstance(self.JString, len(qstrings))
+    for i in range(len(qstrings)):
+      jqstrings[i] = self.JString(qstrings[i])
+    results = self.tdbquery.sequentialQuery(jqstrings)
+    sequential_result_list = []
+    for i in range(results.size()):
+      result = results.get(i)
+      result_list = []
+      for j in range(result.size()):
+        query_solution = result.get(j)
+        solution_dict = {}
+        iter = query_solution.varNames()
+        while iter.hasNext():
+          var = iter.next()
+          string = query_solution.get(var).toString()
+          solution_dict[var] = string
+        result_list.append(solution_dict)
+      sequential_result_list.append(result_list)
+    return sequential_result_list
 
   def parallel_query(self, qstrings, num_threads):
     jqstrings = self.JArray.newInstance(self.JString, len(qstrings))
