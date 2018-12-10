@@ -1,8 +1,14 @@
+import logging
+
 from omniscient.utils.tools import Counter
 from omniscient.structure.action import Action
 from omniscient.structure.edge import Edge
 from omniscient.structure.vertex import Vertex
 from omniscient.structure import constant
+
+
+LOGGER = logging.getLogger("QueryGraph")
+LOGGER.setLevel(logging.INFO)
 
 class QueryGraph(object):
 
@@ -163,9 +169,13 @@ class QueryGraph(object):
       self.grounded_results = grounded_results
     elif self.grounded_results is None:
       raise ValueError("Grounded Results should provided")
-    for result in self.grounded_results:
-      for var_symbol, value in result.items():
-        self.value_to_vertex(f"?{var_symbol}").grounding(value)
+    try:
+      for result in self.grounded_results:
+        for var_symbol, value in result.items():
+          self.value_to_vertex(f"?{var_symbol}").grounding(value)
+    except:
+      LOGGER.error("Grouding error")
+      LOGGER.error(self.query_str)
 
   def graph_to_actions(self):
     """

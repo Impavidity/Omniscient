@@ -12,7 +12,8 @@ class Stage(object):
         variable_pool,
         mention,
         gold_predicate,
-        action):
+        action,
+        black_predicate_dict):
     """
 
     Args:
@@ -34,6 +35,7 @@ class Stage(object):
     self.action = action
     self.incoming_edges = None
     self.outgoing_edges = None
+    self.black_predicate_dict = black_predicate_dict
     """TODO: The mask function need to be implemented"""
     # self.sentence.mask(self.mention)
 
@@ -88,35 +90,63 @@ class Stage(object):
     else:
       raise ValueError("You need to provide resource: Cache or QueryGraphUtil")
 
+  def is_blacked(self, predicate, direction):
+    if self.standpoint.value not in self.black_predicate_dict:
+      return False
+    if (predicate, direction) not in self.black_predicate_dict[self.standpoint.value]:
+      return False
+    return True
+
   def to_training_example(self, cache=None, utils=None):
     examples = []
-    for neighbourhood in list(self.get_incoming_edges(cache=cache, utils=utils)
-                          + self.get_outgoing_edges(cache=cache, utils=utils)):
+    directions = []
+    incoming_edges = self.get_incoming_edges(cache=cache, utils=utils)
+    directions.extend([constant.P_BACKWARD] * len(incoming_edges))
+    outgoing_edges = self.get_outgoing_edges(cache=cache, utils=utils)
+    directions.extend([constant.P_FORWARD] * len(outgoing_edges))
+    for neighbourhood, direction in zip(incoming_edges + outgoing_edges, directions):
       if utils and not utils.is_valid_predicate(neighbourhood["p"]):
         continue
       if neighbourhood['p'] == self.gold_predicate.value:
         continue
+      if self.is_blacked(neighbourhood['p'], direction):
+        continue
       # Not to use the mention for masking for now
       examples.append(StageExample(
         sentence=self.sentence,
+        standpoint=self.standpoint,
         predicate_positive=self.gold_predicate,
+        predicate_positive_direction=self.action.p_direction,
         predicate_negative=neighbourhood,
+        predicate_negative_direction=direction,
         predicate=constant.NONE,
-        gold_predicate=constant.NONE))
+        predicate_direction=constant.NONE,
+        gold_predicate=constant.NONE,
+        gold_predicate_direction=constant.NONE))
     return examples
 
   def to_testing_example(self, cache=None, utils=None):
     examples = []
+    directions = []
     incoming_edges = self.get_incoming_edges(cache=cache, utils=utils)
+    directions.extend([constant.P_BACKWARD] * len(incoming_edges))
     outgoing_edges = self.get_outgoing_edges(cache=cache, utils=utils)
-    for neighbourhood in incoming_edges + outgoing_edges:
+    directions.extend([constant.P_FORWARD] * len(outgoing_edges))
+    for neighbourhood, direction in zip(incoming_edges + outgoing_edges, directions):
       if utils and not utils.is_valid_predicate(neighbourhood["p"]):
+        continue
+      if self.is_blacked(neighbourhood['p'], direction):
         continue
       examples.append(StageExample(
         sentence=self.sentence,
+        standpoint=self.standpoint,
         predicate_positive=constant.NONE,
+        predicate_positive_direction=constant.NONE,
         predicate_negative=constant.NONE,
+        predicate_negative_direction=constant.NONE,
         predicate=neighbourhood,
-        gold_predicate=self.gold_predicate))
+        predicate_direction=direction,
+        gold_predicate=self.gold_predicate,
+        gold_predicate_direction=self.action.p_direction))
     return examples
 

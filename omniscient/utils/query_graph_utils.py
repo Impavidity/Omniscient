@@ -1,5 +1,6 @@
 import copy
 import json
+import logging
 import os
 import uuid
 import subprocess
@@ -16,6 +17,16 @@ except:
 
 
 TMP_DIR = "sparql_tmp"
+LOGGER = logging.getLogger("QueryGraphUtils")
+LOGGER.setLevel(logging.INFO)
+
+
+def reverse_direction(direction):
+  if direction == constant.P_FORWARD:
+    return constant.P_BACKWARD
+  if direction == constant.P_BACKWARD:
+    return constant.P_FORWARD
+  raise ValueError("Error argument on {}".format(direction))
 
 class QueryGraphUtils(object):
 
@@ -82,7 +93,10 @@ class QueryGraphUtils(object):
       elif self.query_client:
         results = self.query_client.query(refined_sparql.replace(
           "DISTINCT ?x", "DISTINCT *").encode("utf-8"))
-        graph.grounding(grounded_results=results)
+        if results:
+          graph.grounding(grounded_results=results)
+        else:
+          LOGGER.info("grounding failed with \n{}\n".format(refined_sparql))
       else:
         raise ValueError("Grounded results are needed or the query client should be initialized")
     return sparql_parse_json, graph
@@ -137,12 +151,14 @@ class QueryGraphUtils(object):
     stages = []
     variable_pool = []
     sent = Sentence(sentence)
+    black_predicate_dict = {}
     for action in actions:
       if action.standpoint.type == constant.URI:
         mention = Mention(linked_uri=action.standpoint.value)
       else:
         mention = None
       query_graph_new = self.apply_action(query_graph, action)
+      black_predicate_dict_ = copy.deepcopy(black_predicate_dict)
       stage = Stage(
         sentence=sent,
         query_graph=query_graph_new,
@@ -150,7 +166,16 @@ class QueryGraphUtils(object):
         variable_pool=copy.deepcopy(variable_pool),
         mention=mention,
         gold_predicate=action.predicate,
-        action=action)
+        action=action,
+        black_predicate_dict=black_predicate_dict_)
+
+      if action.standpoint.value not in black_predicate_dict:
+        black_predicate_dict[action.standpoint.value] = []
+      black_predicate_dict[action.standpoint.value].append((action.predicate.value, action.p_direction))
+      if action.target.value not in black_predicate_dict:
+        black_predicate_dict[action.target.value] = []
+      black_predicate_dict[action.target.value].append((action.predicate.value, reverse_direction(action.p_direction)))
+
       stages.append(stage)
       if action == constant.GEN_VAR:
         variable_pool.append(len(variable_pool))
