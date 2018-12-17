@@ -9,7 +9,9 @@ import os
 import datetime
 import json
 from omniscient.kg.dbpedia.dbpedia import DBpedia
-from omniscient.kg.dbpedia.dbpedia_node import DBpediaNode, DBPEDIA_FOAF_LONG
+from omniscient.kg.dbpedia.dbpedia_node import (
+  DBpediaNode,
+  DBPEDIA_FOAF_LONG)
 
 
 LOGGER = logging.getLogger("NameExtraction")
@@ -27,10 +29,11 @@ class StringCollection(object):
 
 class NameExtraction(object):
 
-  def __init__(self, input_dir, output_path, output_file):
+  def __init__(self, input_dir, output_path, output_file, language_filter):
     self.input_dir = input_dir
     self.output_path = output_path
     self.output_file = output_file
+    self.language_filter = language_filter
 
     LOGGER.info("Input path: " + self.input_dir)
     LOGGER.info("Output path: " + self.output_path)
@@ -71,7 +74,7 @@ class NameExtraction(object):
       if predicate.startswith(DBPEDIA_FOAF_LONG):
         for value in src.predicate_values[p]:
           try:
-            obj_val = NameExtraction.clean_special_char(DBpediaNode.normalize_object_value(value))
+            obj_val = NameExtraction.clean_special_char(DBpediaNode.normalize_object_value(value, self.language_filter))
             if len(obj_val) > 0:
               collection.add_name(obj_val)
           except:
@@ -79,7 +82,7 @@ class NameExtraction(object):
     return collection
 
 def main(args):
-  NameExtraction(args.input, args.output_path, args.output_file).run()
+  NameExtraction(args.input, args.output_path, args.output_file, json.loads(args.language_filter)).run()
 
 
 if __name__ == "__main__":
@@ -87,5 +90,6 @@ if __name__ == "__main__":
   argparser.add_argument("--input", type=str, required=True)
   argparser.add_argument("--output_path", type=str, required=True)
   argparser.add_argument("--output_file", type=str, required=True)
+  argparser.add_argument("--language_filter", type=str, required=True, default="\"['en']\"")
   args = argparser.parse_args()
   main(args)

@@ -33,14 +33,15 @@ class StringCollection(object):
 
 class NameExtraction(object):
 
-  def __init__(self, input_path, output_path, output_file):
+  def __init__(self, input_path, output_path, output_file, language_filter):
     self.input_path = input_path
     self.output_path = output_path
     self.output_file = output_file
-
+    self.language_filter = language_filter
     LOGGER.info("Input path: " + self.input_path)
     LOGGER.info("Output path: " + self.output_path)
     LOGGER.info("Output file: " + self.output_file)
+    LOGGER.info("Language filter: " + self.language_filter)
 
     if not os.path.exists(self.input_path) or not os.path.isfile(self.input_path):
       raise IOError("Input" + self.input_path + " does not exist.")
@@ -73,18 +74,18 @@ class NameExtraction(object):
       predicate = FreebaseNode.clean_uri(p)
       if predicate.startswith(FB_OBJECT_NAME):
         for value in src.predicate_values[p]:
-          obj_val = NameExtraction.clean_special_char(FreebaseNode.normalize_object_value(value))
+          obj_val = NameExtraction.clean_special_char(FreebaseNode.normalize_object_value(value, self.language_filter))
           if len(obj_val) > 0:
             collection.add_name(obj_val)
       elif predicate.startswith(FB_COMMON_TOPIC_ALIAS):
         for value in src.predicate_values[p]:
-          obj_val = NameExtraction.clean_special_char(FreebaseNode.normalize_object_value(value))
+          obj_val = NameExtraction.clean_special_char(FreebaseNode.normalize_object_value(value, self.language_filter))
           if len(obj_val) > 0:
             collection.add_alias(obj_val)
     return collection
 
 def main(args):
-  NameExtraction(args.input, args.output_path, args.output_file).run()
+  NameExtraction(args.input, args.output_path, args.output_file, json.loads(args.language_filter)).run()
 
 
 if __name__ == "__main__":
@@ -92,5 +93,6 @@ if __name__ == "__main__":
   argparser.add_argument("--input", type=str, required=True)
   argparser.add_argument("--output_path", type=str, required=True)
   argparser.add_argument("--output_file", type=str, required=True)
+  argparser.add_argument("--language_filter", type=str, default="\"['en']\"")
   args = argparser.parse_args()
   main(args)

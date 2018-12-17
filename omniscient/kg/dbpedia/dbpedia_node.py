@@ -5,6 +5,7 @@ from enum import Enum
 
 DBPEDIA_FOAF_LONG = "http://xmlns.com/foaf/0.1/name"
 LANG_EN = "en"
+LANG_ZH = "zh"
 
 RDF_OBJECT_TYPE = Enum('RDF_OBJECT_TYPE', ('URI', 'STRING', 'TEXT', 'OTHER'))
 FOO = "<foo>"
@@ -78,7 +79,7 @@ class DBpediaNode(object):
     return ustr.encode(encoding)
 
   @staticmethod
-  def normalize_object_value(value):
+  def normalize_object_value(value, language_filter=list([LANG_EN])):
     value_type = DBpediaNode.get_object_type(value)
     if value_type == RDF_OBJECT_TYPE.URI:
       return DBpediaNode.clean_uri(value)
@@ -92,7 +93,7 @@ class DBpediaNode(object):
     elif value_type == RDF_OBJECT_TYPE.TEXT:
       label, language, datatype = DBpediaNode.parse_literal(value)
       if language is not None:
-        if language == LANG_EN:
+        if language in language_filter:
           return label
         else:
           return ""
