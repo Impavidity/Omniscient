@@ -2,6 +2,12 @@
 
 Knowledge Extraction, Graph Construction and exciting Applications
 
+## SPARQL query in command line
+
+```
+python -m omniscient.kg.tdb_query --index /path/to/index --query "select * where { ?s ?p ?o .} limit 10"
+```
+
 ## Note:
 
 - pipeline:
@@ -64,7 +70,7 @@ https://github.com/explosion/spaCy/blob/master/spacy/cli/download.py
 - Download the freebase dump from [here](https://developers.google.com/freebase/)
 - Extract names from dumps
     ```
-    nohup python -u -m kg.freebase.name_extraction --input /path/to/freebase/freebase-rdf-latest.gz --output_path /path/to/index/ --output_file freebase_name.json > freebase_name_extraction.log &
+    nohup python -u -m kg.freebase.name_extraction --input /path/to/freebase/freebase-rdf-latest.gz --output_path /path/to/index/ --output_file freebase_name.json --language_filter "\"['en', 'zh']\""> freebase_name_extraction.log &
     ```
 - Build Index from the json file
     ```
