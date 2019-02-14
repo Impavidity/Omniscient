@@ -62,6 +62,8 @@ https://github.com/explosion/spaCy/blob/master/spacy/cli/download.py
     ```
     mkdir resource
     cd resource
+    mkdir jars
+    cd jars
     wget https://git.uwaterloo.ca/p8shi/jar/raw/master/tdbquery.jar
     ```
 
