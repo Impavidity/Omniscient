@@ -153,8 +153,9 @@ class QueryGraphUtils(object):
     sent = Sentence(sentence)
     black_predicate_dict = {}
     for action in actions:
+      # TODO: fix the mention here
       if action.standpoint.type == constant.URI:
-        mention = Mention(linked_uri=action.standpoint.value)
+        mention = None
       else:
         mention = None
       query_graph_new = self.apply_action(query_graph, action)

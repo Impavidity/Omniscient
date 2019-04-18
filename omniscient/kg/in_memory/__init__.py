@@ -1,0 +1,1 @@
+from omniscient.kg.in_memory import *

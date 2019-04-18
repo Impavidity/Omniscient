@@ -1,6 +1,5 @@
 import os
 import sys
-import jnius_config
 
 
 if sys.platform == 'win32':
