@@ -7,7 +7,7 @@ class SimpleSearcher(object):
     self.path = path
     self.JString = autoclass('java.lang.String')
     JSearcher = autoclass('io.anserini.search.SimpleSearcher')
-    self.searcher = JSearcher(self.Jstring(path))
+    self.searcher = JSearcher(self.JString(path))
     self.searcher.setBM25Similarity(k1, b)
 
   def query(self, qstring, num=8):
@@ -30,3 +30,13 @@ class SimpleSearcher(object):
                           'docid': candidate.docid}
         candidates.append(paragraph_dict)
     return candidates
+
+if __name__ == "__main__":
+  argparser = argparse.ArgumentParser()
+  argparser.add_argument("--path", type=str)
+  argparser.add_argument("--query", type=str)
+  args = argparser.parse_args()
+  searcher = SimpleSearcher(path=args.path)
+  candidates = searcher.query(qstring=args.query)
+  for candidate in candidates:
+    print(candidate)
