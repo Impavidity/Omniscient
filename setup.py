@@ -10,6 +10,7 @@ setup(
   install_requires=['spacy', 'pyjnius'],
   package_data={"omniscient": [
     "resource/jars/tdbquery.jar",
+    "resource/jars/anserini-0.3.1-SNAPSHOT-fatjar.jar",
     "resource/lexical/ordinal_lexical.tsv"
   ]},
   packages=find_packages(),
