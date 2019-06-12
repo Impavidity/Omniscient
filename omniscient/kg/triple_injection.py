@@ -3,7 +3,7 @@ from omniscient.base.constants import *
 
 logger = Log("info")
 
-class TriplesInjection(object):
+class TripleInjection(object):
   """
   Basic Injection Class. The current backend is elasticsearch
   """

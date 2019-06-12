@@ -1,29 +1,33 @@
 {
   "setting": {
-        "settings": {
-            "number_of_shards": 10,
-            "number_of_replicas": 0
-        }
+      "settings": {
+        "number_of_shards": 10,
+        "number_of_replicas": 0
+      }
     },
     "mapping": {
-        "triples": {
-            "properties": {
-                "subject": {
-                    "properties": {
-
-                    }
-                },
-                "predicate": {
-                    "properties": {
-
-                    }
-                },
-                "object": {
-                    "properties": {
-
-                    }
-                }
+      "properties": {
+        "subject": {
+          "properties": {
+            "text": {
+              "type": "keyword"
             }
+          }
+        },
+        "predicate": {
+          "properties": {
+            "text": {
+              "type": "keyword"
+            }
+          }
+        },
+        "object": {
+          "properties": {
+            "text": {
+              "type": "keyword"
+            }
+          }
         }
+      }
     }
 }
