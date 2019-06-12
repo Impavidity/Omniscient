@@ -1,0 +1,6 @@
+INDEX_NAME = "index_name"
+INDEX_SETTINGS = "index_settings"
+SETTING = "setting"
+MAPPING = "mapping"
+DATASET = "dataset"
+INPUT_DIR = "input_dir"

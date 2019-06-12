@@ -93,7 +93,7 @@ class DBpediaNode(object):
     elif value_type == RDF_OBJECT_TYPE.TEXT:
       label, language, datatype = DBpediaNode.parse_literal(value)
       if language is not None:
-        if language in language_filter:
+        if language_filter is None or language in language_filter:
           return label
         else:
           return ""
